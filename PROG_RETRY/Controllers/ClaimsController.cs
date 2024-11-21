@@ -2,20 +2,21 @@
 using PROG_Part_2.Models;
 using PROG_Part_2.Services;
 using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace PROG_Part_2.Controllers
 {
     public class ClaimsController : Controller
     {
         private readonly AzureFileShareService _fileShareService;
+
+        public static List<Claims> _claimsList = new List<Claims>();
+
         public ClaimsController(AzureFileShareService fileShareService)
         {
             _fileShareService = fileShareService;
         }
-
-        public static List<Claims> _claimsList = new List<Claims>(); // (Stack Overflow, 2016)
 
         [HttpGet]
         public IActionResult SubmitClaim()
@@ -24,7 +25,7 @@ namespace PROG_Part_2.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SubmitClaim(Claims model, IFormFile file) // (Stack Overflow, 2016)
+        public async Task<IActionResult> SubmitClaim(Claims model, IFormFile file)
         {
             if (ModelState.IsValid)
             {
@@ -39,11 +40,16 @@ namespace PROG_Part_2.Controllers
                     }
                 }
 
+                model.TotalPayment = model.HoursWorked * model.HourlyRate;
+
                 _claimsList.Add(model);
+
                 return RedirectToAction("Index");
             }
+
             return View("ClaimView", model);
         }
+
         public IActionResult Index()
         {
             return View(_claimsList);

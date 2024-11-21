@@ -31,6 +31,11 @@
             </div>
 
             <div class="form-group" style="margin-bottom: 15px;">
+                <label for="totalPayment" style="color: #2c3e50;">Total Payment</label>
+                <input type="number" id="totalPayment" name="TotalPayment" class="form-control" readonly style="border: 1px solid #2c3e50; border-radius: 4px;" />
+            </div>
+
+            <div class="form-group" style="margin-bottom: 15px;">
                 @Html.LabelFor(m => m.AdditionalNotes, "Additional Notes", new { @style = "color: #2c3e50;" }) <!--(dotnet-bot, 2024)-->
                 @Html.TextBoxFor(m => m.AdditionalNotes, new { @class = "form-control", type = "text", style = "border: 1px solid #2c3e50; border-radius: 4px;" }) <!--(dotnet-bot, 2024)-->
                 @Html.ValidationMessageFor(m => m.AdditionalNotes, null, new { @style = "color: #e74c3c;" }) <!--(dotnet-bot, 2024)-->
@@ -56,4 +61,19 @@
             </div>
         }
     </div>
+
+    @section Scripts {
+        <script>
+            $(document).ready(function () {
+                $('#hoursWorked, #hourlyRate').on('input', function () {
+                    var hoursWorked = parseFloat($('#hoursWorked').val()) || 0;
+                    var hourlyRate = parseFloat($('#hourlyRate').val()) || 0;
+                    var totalPayment = hoursWorked * hourlyRate;
+
+                    $('#totalPayment').val(totalPayment.toFixed(2));
+                });
+            });
+        </script>
+    }
+
 </body>
