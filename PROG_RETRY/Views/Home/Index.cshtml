@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+
+<body style="background-color: #479ccf;">  <!--(W3Schools, 2024)-->
+<div class="text-center" style="margin-top: 50px;">
+    <h1 class="display-4" style="font-family: Arial, sans-serif; color: #2c3e50;">Welcome to Lecturer Claim System</h1>
+
+    <p>This Program allows you to claim your payment by entering your work hours and pay per hour all in 1 simple application</p>
+
+    <div style="margin-top: 40px;">
+        <a asp-action="SubmitClaim" asp-controller="Claims"
+               style="padding: 15px 30px; background-color: #2d3538; color: white; text-decoration: none; border-radius: 8px; font-size: 18px; margin-right: 20px;">
+            Make a Claim
+        </a>
+
+        <a asp-action="LecturerHistory" asp-controller="Updates"
+               style="padding: 15px 30px; background-color: #2d3538; color: white; text-decoration: none; border-radius: 8px; font-size: 18px;">
+            View Claim Status
+        </a>
+    </div>
+
+</div>
+</body>
