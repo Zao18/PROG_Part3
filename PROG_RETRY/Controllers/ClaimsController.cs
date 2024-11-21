@@ -12,6 +12,7 @@ namespace PROG_Part_2.Controllers
         private readonly AzureFileShareService _fileShareService;
 
         public static List<Claims> _claimsList = new List<Claims>();
+        private static int _nextClaimId = 1;
 
         public ClaimsController(AzureFileShareService fileShareService)
         {
@@ -40,7 +41,9 @@ namespace PROG_Part_2.Controllers
                     }
                 }
 
+                model.ClaimId = _nextClaimId++; 
                 model.TotalPayment = model.HoursWorked * model.HourlyRate;
+                model.Status = "Pending";
 
                 _claimsList.Add(model);
 
