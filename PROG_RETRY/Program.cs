@@ -3,8 +3,6 @@ using PROG_Part_2.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllersWithViews();
-
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 var configuration = builder.Configuration;
@@ -15,25 +13,13 @@ builder.Services.AddSingleton<AzureFileShareService>(sp =>
     return new AzureFileShareService(connectionString, "birdshare");
 });
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    // Enable Swagger in development
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
-    {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "API Documentation");
-        c.RoutePrefix = ""; // Swagger UI is accessible at the root
-    });
-}
-else
+if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 

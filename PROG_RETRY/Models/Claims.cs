@@ -15,5 +15,6 @@ namespace PROG_Part_2.Models
         public long Size { get; set; }
         public DateTimeOffset? LastModified { get; set; }
         public string? Status { get; set; } = "Pending";
+        public bool IsVerified { get; set; }
     }
 }
