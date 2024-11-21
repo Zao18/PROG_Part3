@@ -61,19 +61,18 @@
             </div>
         }
     </div>
-
-    @section Scripts {
-        <script>
-            $(document).ready(function () {
-                $('#hoursWorked, #hourlyRate').on('input', function () {
-                    var hoursWorked = parseFloat($('#hoursWorked').val()) || 0;
-                    var hourlyRate = parseFloat($('#hourlyRate').val()) || 0;
-                    var totalPayment = hoursWorked * hourlyRate;
-
-                    $('#totalPayment').val(totalPayment.toFixed(2));
-                });
-            });
-        </script>
-    }
-
 </body>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#HoursWorked, #HourlyRate').on('input', function () {
+                var hoursWorked = parseFloat($('#HoursWorked').val()) || 0;
+                var hourlyRate = parseFloat($('#HourlyRate').val()) || 0;
+                var totalPayment = hoursWorked * hourlyRate;
+
+                $('#totalPayment').val(totalPayment.toFixed(2));
+            });
+        });
+    </script>
+}
