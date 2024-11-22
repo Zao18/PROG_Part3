@@ -46,7 +46,8 @@ namespace PROG_Part_2.Controllers
 
             if (!validationResult.IsValid)
             {
-                model.Status = "Rejected";
+                var rejectionReason = string.Join(" | ", validationResult.Errors.Select(e => e.ErrorMessage));
+                model.Status = $"Rejected: {rejectionReason}";
                 model.TotalPayment = 0;
                 model.ClaimId = _nextClaimId++;
                 _claimsList.Add(model);
