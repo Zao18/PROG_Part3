@@ -11,12 +11,12 @@ namespace PROG_Part_2.Controllers
     public class AdminController : Controller
     {
         private readonly AzureFileShareService _fileShareService;
-        private readonly IValidator<Claims> _claimsValidator;
+        private readonly IValidator<Claims> _claimsValidator; // (dotnet-bot, 2024)
 
-        public AdminController(AzureFileShareService fileShareService, IValidator<Claims> claimsValidator)
+        public AdminController(AzureFileShareService fileShareService, IValidator<Claims> claimsValidator) // (dotnet-bot, 2024)
         {
             _fileShareService = fileShareService;
-            _claimsValidator = claimsValidator;
+            _claimsValidator = claimsValidator; // (dotnet-bot, 2024)
         }
 
         public IActionResult PendingClaims()
@@ -26,7 +26,7 @@ namespace PROG_Part_2.Controllers
         }
 
         [HttpPost]
-        public IActionResult ApproveClaim(int id)
+        public IActionResult ApproveClaim(int id) // (Microsoft, 2023)
         {
             var claim = ClaimsController._claimsList.FirstOrDefault(c => c.ClaimId == id);
             if (claim != null)
@@ -37,7 +37,7 @@ namespace PROG_Part_2.Controllers
                 }
                 else
                 {
-                    var validationResult = _claimsValidator.Validate(claim);
+                    var validationResult = _claimsValidator.Validate(claim); // (dotnet-bot, 2024)
 
                     if (validationResult.IsValid)
                     {
@@ -53,7 +53,7 @@ namespace PROG_Part_2.Controllers
         }
 
         [HttpPost]
-        public IActionResult RejectClaim(int id)
+        public IActionResult RejectClaim(int id) // (Microsoft, 2023)
         {
             var claim = ClaimsController._claimsList.FirstOrDefault(c => c.ClaimId == id);
             if (claim != null)

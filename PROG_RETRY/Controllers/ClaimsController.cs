@@ -44,15 +44,15 @@ namespace PROG_Part_2.Controllers
 
             var validationResult = _claimValidator.Validate(model);
 
-            if (!validationResult.IsValid)
+            if (!validationResult.IsValid) // (trevorc, 2011)
             {
-                var rejectionReason = string.Join(" | ", validationResult.Errors.Select(e => e.ErrorMessage));
-                model.Status = $"Rejected: {rejectionReason}";
-                model.TotalPayment = 0;
-                model.ClaimId = _nextClaimId++;
-                _claimsList.Add(model);
+                var rejectionReason = string.Join(" | ", validationResult.Errors.Select(e => e.ErrorMessage)); // (trevorc, 2011)
+                model.Status = $"Rejected: {rejectionReason}"; // (trevorc, 2011)
+                model.TotalPayment = 0; // (trevorc, 2011)
+                model.ClaimId = _nextClaimId++; // (trevorc, 2011)
+                _claimsList.Add(model); // (trevorc, 2011)
 
-                return RedirectToAction("Index");
+                return RedirectToAction("Index"); // (trevorc, 2011)
             }
 
             if (ModelState.IsValid)
