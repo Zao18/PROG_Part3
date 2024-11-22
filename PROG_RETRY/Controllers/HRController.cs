@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
+using PROG_Part_2.Models;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace PROG_Part_2.Controllers
 {
@@ -8,52 +10,79 @@ namespace PROG_Part_2.Controllers
     [Route("api/[controller]")]
     public class HRController : ControllerBase
     {
-        private readonly ApplicationDbContext _context;
-
-        public HRController(ApplicationDbContext context)
+        [Authorize(Roles = "HR")]
+        [HttpGet("ApprovedClaims")]
+        public IActionResult GetApprovedClaims()
         {
-            _context = context;
+            // Fetch approved claims from the in-memory list
+            var approvedClaims = ClaimsController._claimsList.Where(c => c.Status == "Approved").ToList();
+
+            if (!approvedClaims.Any())
+                return NotFound("No approved claims found.");
+
+            return Ok(approvedClaims);
         }
 
         [Authorize(Roles = "HR")]
-        [HttpGet("Lecturers")]
-        public async Task<IActionResult> GetLecturers()
-        {
-            var lecturers = await _context.Lecturers.ToListAsync();
-            return Ok(lecturers);
-        }
-
         [HttpPost("UpdateLecturer")]
-        public async Task<IActionResult> UpdateLecturer([FromBody] Lecturer updatedLecturer)
+        public IActionResult UpdateLecturer([FromBody] Claims updatedClaim)
         {
-            var lecturer = await _context.Lecturers.FindAsync(updatedLecturer.Id);
-            if (lecturer == null) return NotFound();
+            // Fetch the claim/lecturer by name (assuming 'Name' identifies the lecturer)
+            var claim = ClaimsController._claimsList.FirstOrDefault(c => c.Name == updatedClaim.Name);
 
-            lecturer.Name = updatedLecturer.Name;
-            lecturer.Email = updatedLecturer.Email;
-            lecturer.ContactNumber = updatedLecturer.ContactNumber;
+            if (claim == null)
+                return NotFound("Lecturer not found.");
 
-            await _context.SaveChangesAsync();
-            return NoContent();
+            // Update the claim/lecturer details
+            claim.Name = updatedClaim.Name;
+            claim.AdditionalNotes = updatedClaim.AdditionalNotes;
+            claim.IsVerified = updatedClaim.IsVerified;
+
+            return Ok("Lecturer details updated successfully.");
         }
 
+        [Authorize(Roles = "HR")]
         [HttpGet("GenerateInvoice/{claimId}")]
-        public async Task<IActionResult> GenerateInvoice(int claimId)
+        public IActionResult GenerateInvoice(int claimId)
         {
-            // Fetch claim details and generate invoice
-            var claim = await _context.Claims.FindAsync(claimId);
-            if (claim == null) return NotFound();
+            // Fetch the claim by ID
+            var claim = ClaimsController._claimsList.FirstOrDefault(c => c.ClaimId == claimId);
 
-            // Logic for generating invoice (using SSRS or Crystal Reports)
-            var report = GenerateReport(claim);
-            return File(report, "application/pdf", "Invoice.pdf");
+            if (claim == null)
+                return NotFound("Claim not found.");
+
+            // Generate a simple mock invoice (use SSRS for actual implementation)
+            var invoiceData = $@"
+                Invoice for Claim ID: {claim.ClaimId}
+                Name: {claim.Name}
+                Hours Worked: {claim.HoursWorked}
+                Hourly Rate: {claim.HourlyRate}
+                Total Payment: {claim.TotalPayment}
+                Status: {claim.Status}";
+
+            // Return the invoice as a plain text file
+            var fileName = $"Invoice_{claim.ClaimId}.txt";
+            var fileBytes = System.Text.Encoding.UTF8.GetBytes(invoiceData);
+            return File(fileBytes, "text/plain", fileName);
         }
 
-        private byte[] GenerateReport(Claim claim)
+        [Authorize(Roles = "HR")]
+        [HttpPost("ProcessClaims")]
+        public IActionResult ProcessClaims()
         {
-            // Implement report generation logic here
-            return new byte[0];
+            // Example logic to auto-process claims (e.g., mark all pending claims as reviewed)
+            var pendingClaims = ClaimsController._claimsList.Where(c => c.Status == "Pending").ToList();
+
+            if (!pendingClaims.Any())
+                return NotFound("No pending claims found.");
+
+            foreach (var claim in pendingClaims)
+            {
+                claim.Status = "Processed";
+            }
+
+            return Ok($"{pendingClaims.Count} claims processed successfully.");
         }
     }
-
 }
+
