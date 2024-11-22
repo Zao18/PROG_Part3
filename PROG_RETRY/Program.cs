@@ -1,7 +1,12 @@
 using Microsoft.Extensions.Configuration;
 using PROG_Part_2.Services;
+using FluentValidation;
+using PROG_Part_2.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddControllersWithViews();
+builder.Services.AddValidatorsFromAssemblyContaining<ClaimsValidator>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

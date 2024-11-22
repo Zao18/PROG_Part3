@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using PROG_Part_2.Models;
 using PROG_Part_2.Services;
 using PROG_RETRY.Controllers;
@@ -10,10 +11,12 @@ namespace PROG_Part_2.Controllers
     public class AdminController : Controller
     {
         private readonly AzureFileShareService _fileShareService;
+        private readonly IValidator<Claims> _claimsValidator;
 
-        public AdminController(AzureFileShareService fileShareService)
+        public AdminController(AzureFileShareService fileShareService, IValidator<Claims> claimsValidator)
         {
             _fileShareService = fileShareService;
+            _claimsValidator = claimsValidator;
         }
 
         public IActionResult PendingClaims()
@@ -23,18 +26,29 @@ namespace PROG_Part_2.Controllers
         }
 
         [HttpPost]
-        public IActionResult ApproveClaim(int id) // (Microsoft, 2023)
+        public IActionResult ApproveClaim(int id)
         {
             var claim = ClaimsController._claimsList.FirstOrDefault(c => c.ClaimId == id);
             if (claim != null)
             {
-                claim.Status = "Approved";
+                // Validate the claim before approval
+                var validationResult = _claimsValidator.Validate(claim);
+
+                if (validationResult.IsValid)
+                {
+                    claim.Status = "Approved";
+                }
+                else
+                {
+                    // Concatenate all validation error messages into the Status
+                    claim.Status = "Rejected: " + string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
+                }
             }
             return RedirectToAction("PendingClaims");
         }
 
         [HttpPost]
-        public IActionResult RejectClaim(int id) // (Microsoft, 2023)
+        public IActionResult RejectClaim(int id)
         {
             var claim = ClaimsController._claimsList.FirstOrDefault(c => c.ClaimId == id);
             if (claim != null)
