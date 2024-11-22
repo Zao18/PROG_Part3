@@ -1,0 +1,40 @@
+﻿@model IEnumerable<PROG_Part_2.Models.Claims>
+
+@{
+    ViewData["Title"] = "Status";
+}
+<body style="background-color: #479ccf;">
+    <!--(W3Schools, 2024)-->
+    <div class="claim-form-container" style="background-color: #ffffff; border-radius: 8px; padding: 20px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
+        <h2 style="text-align:center; color:#2c3e50; font-family: Arial, sans-serif;">HR</h2>
+
+        <table class="table" style="width: 80%; margin: 0 auto; border-collapse: collapse; text-align: left; font-family: Arial, sans-serif;">
+            <!--(W3Schools, 2024)-->
+            <thead>
+                <tr style="background-color: #f8f9fa;">
+                    <th style="padding: 10px; border-bottom: 2px solid #dee2e6;">Lecturer Name</th> <!--(W3Schools, 2024)-->
+                    <th style="padding: 10px; border-bottom: 2px solid #dee2e6;">Hours Worked</th> <!--(W3Schools, 2024)-->
+                    <th style="padding: 10px; border-bottom: 2px solid #dee2e6;">Hourly Rate</th> <!--(W3Schools, 2024)-->
+                    <th style="padding: 10px; border-bottom: 2px solid #dee2e6;">Additional Notes</th> <!--(W3Schools, 2024)-->
+                    <th style="padding: 10px; border-bottom: 2px solid #dee2e6;">Document</th> <!--(W3Schools, 2024)-->
+                    <th style="padding: 10px; border-bottom: 2px solid #dee2e6;">Status</th> <!--(W3Schools, 2024)-->
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var claim in Model)
+                {
+                    <tr style="background-color: #f5f5f5;">
+                        <td style="padding: 10px; border-bottom: 1px solid #dee2e6;">@claim.Name</td> <!--(W3Schools, 2024)-->
+                        <td style="padding: 10px; border-bottom: 1px solid #dee2e6;">@claim.HoursWorked</td> <!--(W3Schools, 2024)-->
+                        <td style="padding: 10px; border-bottom: 1px solid #dee2e6;">@claim.HourlyRate</td> <!--(W3Schools, 2024)-->
+                        <td style="padding: 10px; border-bottom: 1px solid #dee2e6;">@claim.AdditionalNotes</td> <!--(W3Schools, 2024)-->
+                        <td style="padding: 10px; border-bottom: 1px solid #dee2e6;">@claim.DocumentName</td> <!--(W3Schools, 2024)-->
+                        <td>
+                            <span class="status-label @(claim.Status.ToLower())">@claim.Status</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</body>

@@ -2,7 +2,7 @@
 
 namespace PROG_Part_2.Controllers
 {
-    public class UpdatesController : Controller
+    public class HRController : Controller
     {
         public IActionResult LecturerHistory()
         {

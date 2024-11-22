@@ -4,60 +4,64 @@
     ViewData["Title"] = "ClaimView";
 }
 
-<body style="background-color: #479ccf; font-family: Arial, sans-serif; color: #fff;">
-    <div class="claim-form-container" style="background-color: #ffffff; border-radius: 8px; padding: 20px; max-width: 600px; margin: 40px auto; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);">
-        <h2 style="color: #2c3e50; text-align: center; margin-bottom: 20px;">Submit Monthly Claim</h2>
+<body style="background-color: #479ccf; font-family: 'Roboto', sans-serif; color: #333;">
+    <div class="claim-form-container" style="background-color: #ffffff; border-radius: 12px; padding: 30px; max-width: 700px; margin: 50px auto; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);">
+        <h2 style="color: #34495e; text-align: center; margin-bottom: 25px; font-weight: bold;">Submit Monthly Claim</h2>
 
         @Html.ValidationSummary(false, "", new { @class = "text-danger", style = "color: #e74c3c;" })
 
         @using (Html.BeginForm("SubmitClaim", "Claims", FormMethod.Post, new { enctype = "multipart/form-data", @class = "claim-form" }))
         {
-            <div class="form-group" style="margin-bottom: 15px;">
-                @Html.LabelFor(m => m.Name, "Lecturer Name", new { @style = "color: #2c3e50;" }) <!--(dotnet-bot, 2024)-->
-                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", type = "text", style = "border: 1px solid #2c3e50; border-radius: 4px;" }) <!--(dotnet-bot, 2024)-->
-                @Html.ValidationMessageFor(m => m.Name, null, new { @style = "color: #e74c3c;" }) <!--(dotnet-bot, 2024)-->
-            </div>
-
-            <div class="form-group" style="margin-bottom: 15px;">
-                @Html.LabelFor(m => m.HoursWorked, "Hours Worked", new { @style = "color: #2c3e50;" }) <!--(dotnet-bot, 2024)-->
-                @Html.TextBoxFor(m => m.HoursWorked, new { @class = "form-control", type = "number", style = "border: 1px solid #2c3e50; border-radius: 4px;" }) <!--(dotnet-bot, 2024)-->
-                @Html.ValidationMessageFor(m => m.HoursWorked, null, new { @style = "color: #e74c3c;" }) <!--(dotnet-bot, 2024)-->
-            </div>
-
-            <div class="form-group" style="margin-bottom: 15px;">
-                @Html.LabelFor(m => m.HourlyRate, "Hourly Rate", new { @style = "color: #2c3e50;" }) <!--(dotnet-bot, 2024)-->
-                @Html.TextBoxFor(m => m.HourlyRate, new { @class = "form-control", type = "number", style = "border: 1px solid #2c3e50; border-radius: 4px;" }) <!--(dotnet-bot, 2024)-->
-                @Html.ValidationMessageFor(m => m.HourlyRate, null, new { @style = "color: #e74c3c;" }) <!--(dotnet-bot, 2024)-->
-            </div>
-
-            <div class="form-group" style="margin-bottom: 15px;">
-                <label for="totalPayment" style="color: #2c3e50;">Total Payment</label>
-                <input type="number" id="totalPayment" name="TotalPayment" class="form-control" readonly style="border: 1px solid #2c3e50; border-radius: 4px;" />
-            </div>
-
-            <div class="form-group" style="margin-bottom: 15px;">
-                @Html.LabelFor(m => m.AdditionalNotes, "Additional Notes", new { @style = "color: #2c3e50;" }) <!--(dotnet-bot, 2024)-->
-                @Html.TextBoxFor(m => m.AdditionalNotes, new { @class = "form-control", type = "text", style = "border: 1px solid #2c3e50; border-radius: 4px;" }) <!--(dotnet-bot, 2024)-->
-                @Html.ValidationMessageFor(m => m.AdditionalNotes, null, new { @style = "color: #e74c3c;" }) <!--(dotnet-bot, 2024)-->
+            <div class="form-group" style="margin-bottom: 20px;">
+                @Html.LabelFor(m => m.Name, "Lecturer Name", new { @style = "color: #34495e; font-weight: bold;" })
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Enter your name", style = "padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px;" })
+                @Html.ValidationMessageFor(m => m.Name, null, new { @style = "color: #e74c3c;" })
             </div>
 
             <div class="form-group" style="margin-bottom: 20px;">
-                <label for="file" style="color: #2c3e50;">Upload Document:</label>
-                <input type="file" name="file" class="form-control" style="border: 1px solid #2c3e50; border-radius: 4px;" />
+                @Html.LabelFor(m => m.HoursWorked, "Hours Worked", new { @style = "color: #34495e; font-weight: bold;" })
+                @Html.TextBoxFor(m => m.HoursWorked, new { @class = "form-control", type = "number", placeholder = "Enter hours worked", style = "padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px;" })
+                @Html.ValidationMessageFor(m => m.HoursWorked, null, new { @style = "color: #e74c3c;" })
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                @Html.LabelFor(m => m.HourlyRate, "Hourly Rate", new { @style = "color: #34495e; font-weight: bold;" })
+                @Html.TextBoxFor(m => m.HourlyRate, new { @class = "form-control", type = "number", placeholder = "Enter hourly rate", style = "padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px;" })
+                @Html.ValidationMessageFor(m => m.HourlyRate, null, new { @style = "color: #e74c3c;" })
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                <label for="totalPayment" style="color: #34495e; font-weight: bold;">Total Payment</label>
+                <input type="number" id="totalPayment" name="TotalPayment" class="form-control" readonly style="padding: 10px; font-size: 16px; background-color: #f0f0f0; border: 1px solid #ccc; border-radius: 6px;" />
+            </div>
+
+            <div class="form-group" style="margin-bottom: 20px;">
+                @Html.LabelFor(m => m.AdditionalNotes, "Additional Notes", new { @style = "color: #34495e; font-weight: bold;" })
+                @Html.TextAreaFor(m => m.AdditionalNotes, new { @class = "form-control", placeholder = "Add any additional notes...", style = "padding: 10px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px;" })
+                @Html.ValidationMessageFor(m => m.AdditionalNotes, null, new { @style = "color: #e74c3c;" })
+            </div>
+
+            <div class="form-group" style="margin-bottom: 25px;">
+                <label for="file" style="color: #34495e; font-weight: bold;">Upload Document</label>
+                <input type="file" name="file" class="form-control" style="padding: 8px; font-size: 16px; border: 1px solid #ccc; border-radius: 6px;" />
                 @Html.ValidationMessage("file", "", new { @style = "color: #e74c3c;" })
             </div>
 
             @if (!string.IsNullOrEmpty(Model.DocumentName))
             {
                 <div class="form-group">
-                    <p style="color: #2c3e50;">Uploaded Document: <strong>@Model.DocumentName</strong></p>
+                    <p style="color: #34495e;">Uploaded Document: <strong>@Model.DocumentName</strong></p>
                 </div>
             }
 
             <div style="text-align: center;">
-                <button type="submit" class="btn btn-primary btn-lg" style="background-color: #2c3e50; border: none;">Submit Claim</button>
+                <button type="submit" class="btn btn-primary" style="background-color: #3498db; padding: 10px 20px; border: none; border-radius: 6px; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.3s;">
+                    Submit Claim
+                </button>
 
-                <button type="reset" class="btn btn-secondary btn-lg" style="background-color: #95a5a6; border: none; margin-left: 10px;">Clear Fields</button>
+                <button type="reset" class="btn btn-secondary" style="background-color: #7f8c8d; padding: 10px 20px; border: none; border-radius: 6px; color: #fff; font-size: 16px; font-weight: bold; cursor: pointer; transition: background-color 0.3s; margin-left: 10px;">
+                    Clear Fields
+                </button>
             </div>
         }
     </div>
