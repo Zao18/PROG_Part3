@@ -2,24 +2,36 @@
     ViewData["Title"] = "Home Page";
 }
 
+<body style="background: linear-gradient(to right, #479ccf, #3c8ec5); font-family: Arial, sans-serif;">
+    <div class="text-center" style="margin-top: 80px; padding: 20px; color: white;">
+        <h1 class="display-4" style="font-family: Arial, sans-serif; color: #ffffff; font-size: 36px; font-weight: bold;">
+            Welcome to Lecturer Claim System
+        </h1>
 
-<body style="background-color: #479ccf;">  <!--(W3Schools, 2024)-->
-<div class="text-center" style="margin-top: 50px;">
-    <h1 class="display-4" style="font-family: Arial, sans-serif; color: #2c3e50;">Welcome to Lecturer Claim System</h1>
+        <p style="font-size: 20px; max-width: 600px; margin: 0 auto;">
+            This program allows you to claim your payment by entering your work hours and pay per hour all in one simple application.
+        </p>
 
-    <p>This Program allows you to claim your payment by entering your work hours and pay per hour all in 1 simple application</p>
+        <div style="margin-top: 50px;">
+            <a asp-action="SubmitClaim" asp-controller="Claims"
+               style="padding: 15px 30px; background-color: #2d3538; color: white; text-decoration: none;
+                      border-radius: 8px; font-size: 18px; margin-right: 20px; display: inline-block;
+                      transition: background-color 0.3s ease;">
+                Make a Claim
+            </a>
 
-    <div style="margin-top: 40px;">
-        <a asp-action="SubmitClaim" asp-controller="Claims"
-               style="padding: 15px 30px; background-color: #2d3538; color: white; text-decoration: none; border-radius: 8px; font-size: 18px; margin-right: 20px;">
-            Make a Claim
-        </a>
-
-        <a asp-action="LecturerHistory" asp-controller="Updates"
-               style="padding: 15px 30px; background-color: #2d3538; color: white; text-decoration: none; border-radius: 8px; font-size: 18px;">
-            View Claim Status
-        </a>
+            <a asp-action="LecturerHistory" asp-controller="Updates"
+               style="padding: 15px 30px; background-color: #2d3538; color: white; text-decoration: none;
+                      border-radius: 8px; font-size: 18px; display: inline-block;
+                      transition: background-color 0.3s ease;">
+                View Claim Status
+            </a>
+        </div>
     </div>
 
-</div>
+    <footer style="text-align: center; margin-top: 60px; padding: 20px; background-color: #ffffff;
+                  color: #2c3e50; font-size: 16px;">
+        <p>© 2024 Lecturer Claim System. All rights reserved.</p>
+    </footer>
 </body>
+
