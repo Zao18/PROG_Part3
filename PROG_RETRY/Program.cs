@@ -6,7 +6,7 @@ using PROG_Part_2.Models;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
-builder.Services.AddValidatorsFromAssemblyContaining<ClaimsValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<ClaimValidator>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();

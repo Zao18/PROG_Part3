@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using PROG_Part_2.Models;
 using PROG_Part_2.Services;
 using System.Collections.Generic;
@@ -12,11 +13,13 @@ namespace PROG_Part_2.Controllers
         private readonly AzureFileShareService _fileShareService;
 
         public static List<Claims> _claimsList = new List<Claims>();
+        private readonly IValidator<Claims> _claimValidator;
         private static int _nextClaimId = 1;
 
-        public ClaimsController(AzureFileShareService fileShareService)
+        public ClaimsController(AzureFileShareService fileShareService, IValidator<Claims> claimValidator)
         {
             _fileShareService = fileShareService;
+            _claimValidator = claimValidator;
         }
 
         [HttpGet]
@@ -28,20 +31,32 @@ namespace PROG_Part_2.Controllers
         [HttpPost]
         public async Task<IActionResult> SubmitClaim(Claims model, IFormFile file)
         {
+            if (file != null && file.Length > 0)
+            {
+                using (var stream = file.OpenReadStream())
+                {
+                    string directoryName = "uploads";
+                    string fileName = file.FileName;
+                    await _fileShareService.UploadFileAsync(directoryName, fileName, stream);
+                    model.DocumentName = fileName; 
+                }
+            }
+
+            var validationResult = _claimValidator.Validate(model);
+
+            if (!validationResult.IsValid)
+            {
+                model.Status = "Rejected";
+                model.TotalPayment = 0;
+                model.ClaimId = _nextClaimId++;
+                _claimsList.Add(model);
+
+                return RedirectToAction("Index");
+            }
+
             if (ModelState.IsValid)
             {
-                if (file != null && file.Length > 0)
-                {
-                    using (var stream = file.OpenReadStream())
-                    {
-                        string directoryName = "uploads";
-                        string fileName = file.FileName;
-                        await _fileShareService.UploadFileAsync(directoryName, fileName, stream);
-                        model.DocumentName = fileName;
-                    }
-                }
-
-                model.ClaimId = _nextClaimId++; 
+                model.ClaimId = _nextClaimId++;
                 model.TotalPayment = model.HoursWorked * model.HourlyRate;
                 model.Status = "Pending";
 

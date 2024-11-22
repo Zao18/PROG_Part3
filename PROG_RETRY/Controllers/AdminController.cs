@@ -31,17 +31,22 @@ namespace PROG_Part_2.Controllers
             var claim = ClaimsController._claimsList.FirstOrDefault(c => c.ClaimId == id);
             if (claim != null)
             {
-                // Validate the claim before approval
-                var validationResult = _claimsValidator.Validate(claim);
-
-                if (validationResult.IsValid)
+                if (claim.HoursWorked < 0 || claim.HourlyRate < 0)
                 {
-                    claim.Status = "Approved";
+                    claim.Status = "Rejected: Hours worked or Hourly rate cannot be negative.";
                 }
                 else
                 {
-                    // Concatenate all validation error messages into the Status
-                    claim.Status = "Rejected: " + string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
+                    var validationResult = _claimsValidator.Validate(claim);
+
+                    if (validationResult.IsValid)
+                    {
+                        claim.Status = "Approved";
+                    }
+                    else
+                    {
+                        claim.Status = "Rejected: " + string.Join(", ", validationResult.Errors.Select(e => e.ErrorMessage));
+                    }
                 }
             }
             return RedirectToAction("PendingClaims");
